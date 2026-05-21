@@ -1,9 +1,9 @@
 def bereken_gezondheid(gewicht, lengte_cm, leeftijd, geslacht):
-    # 1. Bereken BMI (lengte moet in meters)
+    
     lengte_m = lengte_cm / 100
     bmi = gewicht / (lengte_m ** 2)
     
-    # 2. Bereken BMR op basis van geslacht
+
     if geslacht.lower() == 'man':
         bmr = 88.362 + (13.397 * gewicht) + (4.799 * lengte_cm) - (5.677 * leeftijd)
     else:
@@ -11,7 +11,6 @@ def bereken_gezondheid(gewicht, lengte_cm, leeftijd, geslacht):
         
     return round(bmi, 1), round(bmr, 0)
 
-# Test de werking in de console
 if __name__ == "__main__":
     print("--- Test Gezondheid Calculator ---")
     test_gewicht = float(input("Voer gewicht in (kg): "))
