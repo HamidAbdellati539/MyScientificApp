@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gezondheid Calculator (MVT)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 600px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background-color: #218838; }
+        .results { background-color: #e2f0d9; padding: 15px; border-radius: 4px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Gezondheid Calculator - BMI & BMR</h2>
+    
+    <!-- Het HTML Formulier (stuurt data via POST naar de view) -->
+    <form method="POST">
+        {% csrf_token %} <!-- Cruciaal voor beveiliging in Django formulieren -->
+        
+        <div class="form-group">
+            <label for="gewicht">Gewicht (kg):</label>
+            <input type="number" step="0.1" name="gewicht" id="gewicht" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="lengte">Lengte (cm):</label>
+            <input type="number" step="1" name="lengte" id="lengte" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="leeftijd">Leeftijd (jaren):</label>
+            <input type="number" name="leeftijd" id="leeftijd" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="geslacht">Geslacht:</label>
+            <select name="geslacht" id="geslacht" required>
+                <option value="man">Man</option>
+                <option value="vrouw">Vrouw</option>
+            </select>
+        </div>
+        
+        <button type="submit">Bereken & Sla op</button>
+    </form>
+
+    <!-- Toon resultaten als ze berekend zijn -->
+    {% if bmi and bmr %}
+    <div class="results">
+        <h3>Jouw Resultaten:</h3>
+        <p><strong>Body Mass Index (BMI):</strong> {{ bmi }}</p>
+        <p><strong>Basal Metabolic Rate (BMR):</strong> {{ bmr }} kcal/dag</p>
+    </div>
+    {% endif %}
+
+    <!-- Tabel met geschiedenis uit de SQLite database -->
+    <h3>Geschiedenis (Database)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Geslacht</th>
+                <th>BMI</th>
+                <th>BMR</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meting in history %}
+            <tr>
+                <td>{{ meting.date|date:"Y-m-d H:i" }}</td>
+                <td>{{ meting.geslacht }}</td>
+                <td>{{ meting.bmi }}</td>
+                <td>{{ meting.bmr }} kcal</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nog geen berekeningen uitgevoerd.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

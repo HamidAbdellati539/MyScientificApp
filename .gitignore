@@ -1,0 +1,14 @@
+# Virtuele omgeving (Cruciaal!)
+myworld/
+venv/
+.venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Django specifieke bestanden (optioneel, maar netjes)
+.DS_Store
+
+#Bewust gecommenteerd, zodat u mijn testgegevens nog ziet
+# db.sqlite3
